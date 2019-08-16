@@ -2,10 +2,9 @@ document.addEventListener("DOMContentLoaded",function(event){
     let storedNotes = JSON.parse(localStorage.getItem("notes"));
         notesArray = storedNotes ? storedNotes : [],
         lastCount = localStorage.getItem("counter"),
-
-        count = lastCount ? count : 0,
-        
-        list = document.getElementById("list");
+        count = lastCount ? lastCount : 0,
+        list = document.getElementById("list"),
+        divEdit = document.getElementById("div-edit");
         listRefresh();
     document.getElementById("add")
         .addEventListener("click", function () {
@@ -46,6 +45,7 @@ document.addEventListener("DOMContentLoaded",function(event){
                 dateString = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
                
                 element = document.createElement("LI");
+                element.setAttribute("data-id", notesArray[i].id);
 
                 divName = document.createElement("DIV");
                 divName.textContent = name;
@@ -58,13 +58,35 @@ document.addEventListener("DOMContentLoaded",function(event){
 
                 list.appendChild(element);
 
+                element.addEventListener("click",showItemEvent);
+
+
                 localStorage.setItem("notes",JSON.stringify(notesArray));
                 localStorage.setItem("counter",count);
-                
-
-
 
             }
+
+        }
+
+        function showItemEvent(){
+            divEdit.classList.remove("hide");
+
+            let id = this.getAttribute('data-id'),
+            name ="",
+            content = "";
+
+            for(let i = 0; i < notesArray.length; i++)
+            {
+                if(id == notesArray[i].id)
+                {
+                    name = notesArray[i].name;
+                    content = notesArray[i].content;
+                }
+            }
+    
+            document.getElementById("edit-name").value = name;
+            document.getElementById("edit-content").value = content;
+        
 
         }
 
