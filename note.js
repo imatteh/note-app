@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded",function(event){
         count = lastCount ? lastCount : 0,
         list = document.getElementById("list"),
         divEdit = document.getElementById("div-edit");
+
         listRefresh();
     document.getElementById("add")
         .addEventListener("click", function () {
@@ -86,6 +87,7 @@ document.addEventListener("DOMContentLoaded",function(event){
     
             document.getElementById("edit-name").value = name;
             document.getElementById("edit-content").value = content;
+        
         
 
         }
