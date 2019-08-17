@@ -69,12 +69,23 @@ document.addEventListener("DOMContentLoaded",function(event){
 
         }
 
+
+
+        // Show li into input fields 
         function showItemEvent(){
             divEdit.classList.remove("hide");
 
             let id = this.getAttribute('data-id'),
             name ="",
             content = "";
+
+            if (document.querySelector("#list li.selected") != null) 
+            {
+                document.querySelector("#list li.selected").classList.remove("selected");
+            }
+            this.classList.add('selected');
+
+
 
             for(let i = 0; i < notesArray.length; i++)
             {
@@ -84,7 +95,8 @@ document.addEventListener("DOMContentLoaded",function(event){
                     content = notesArray[i].content;
                 }
             }
-    
+
+
             document.getElementById("edit-name").value = name;
             document.getElementById("edit-content").value = content;
         
@@ -92,9 +104,64 @@ document.addEventListener("DOMContentLoaded",function(event){
 
         }
 
-        document.getElementById("save").addEventListener("click", function(){
+        // Save Event
 
-            
+        document.getElementById("save").addEventListener("click", function(){
+            let name = document.getElementById("edit-name").value,
+            content = document.getElementById("edit-content").value,
+            id = document.querySelector("#list li.selected").getAttribute("data-id");
+
+            for(let i = 0; i < notesArray.length; i++)
+            {
+                if( notesArray[i].id == id)
+                {
+                    notesArray[i].name = name;
+                    notesArray[i].content = content ;
+                    break;
+                }
+            }
+
+            listRefresh();
+            document.querySelector(`#list li[data-id="${id}"]`).classList.add("selected");
         });
+
+
+        // Cancel Event
+
+        document.getElementById("cancel")
+        .addEventListener("click", function() {
+    
+            divEdit.classList.add('hide');
+            document.querySelector("#list li.selected").classList.remove('selected');
+        });
+
+        //  Remove event
+
+        document.getElementById('remove')
+        .addEventListener('click', function() {
+    
+            let id = document.querySelector("#list li.selected").getAttribute("data-id");
+    
+            let confirmResult = confirm('هل حقاً تريد حذف هذه المذكرة');
+    
+            if(confirmResult)
+            {
+                for (let i = 0; i < notesArray.length; i++)
+                {
+                    if(notesArray[i].id == id)
+                    {
+                        notesArray.splice(i, 1);
+                        break;
+                    }
+                }
+    
+                listRefresh();
+    
+                divEdit.classList.add('hide');
+            }
+        });
+
+
+
 
 });
